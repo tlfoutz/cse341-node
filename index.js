@@ -7,14 +7,15 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/public'));
 
-//Prove 09
-const calculateRate = require('./lib/calculateRate')
+//Start Prove 09
+const calculateRate = require('./lib/prove09CalculateRate')
 
 app.get('/prove09', function(request, response) {
-  response.render('../public/rateForm');
+  response.render('../public/prove09Form');
 });
 
-app.get('/results', calculateRate)
+app.get('/prove09Results', calculateRate)
+// End Prove09
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
