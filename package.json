@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "cse341-node",
+  "version": "1.0.0",
+  "description": "TLF node application for BYUI CSE 341",
   "engines": {
     "node": "12.x"
   },
@@ -20,12 +20,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/tlf/cse341-node"
   },
   "keywords": [
-    "node",
+    "BYUI",
+    "CSE 341",
     "heroku",
-    "express"
-  ],
-  "license": "MIT"
+    "express",
+    "node"
+  ]
 }
