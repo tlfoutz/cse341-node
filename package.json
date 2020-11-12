@@ -1,0 +1,31 @@
+{
+  "name": "cse341-node",
+  "description": "BYUI CSE 341 Node course work",
+  "engines": {
+    "node": "12.x"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "got": "^11.3.0",
+    "tape": "^4.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tlfoutz/cse341-node"
+  },
+  "keywords": [
+    "BYUI",
+    "heroku",
+    "express",
+    "node",
+    "cse341"
+  ]
+}

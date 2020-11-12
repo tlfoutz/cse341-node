@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>09 Prove : Assignment - Postal Rate Calculator</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <h2>Postal Rate Calculator</h2>
+
+            <form method="GET" action='results'>
+                <input type="number" step=".5" placeholder='Weight in ounces' name='weight'>
+                <select name='type'>
+                    <option value='stamped'>Letters (Stamped)</option>
+                    <option value='metered'>Letters (Metered)</option>
+                    <option value='flat'>Large Envelope (Flats)</option>
+                    <option value='fcpsr'>*First-Class Package Service—Retail</option>
+                </select><br>
+                <p>*Only for Zones 1 & 2</p>
+                <input type=submit value="Get Rate">
+            </form>
+        </div>
+    </body>
+</html>
