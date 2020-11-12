@@ -1,6 +1,7 @@
 {
-  "name": "cse341-node",
-  "description": "BYUI CSE 341 Node course work",
+  "name": "node-js-getting-started",
+  "version": "0.3.0",
+  "description": "A sample Node.js app using Express 4",
   "engines": {
     "node": "12.x"
   },
@@ -11,7 +12,7 @@
   },
   "dependencies": {
     "ejs": "^2.5.6",
-    "express": "^4.17.1"
+    "express": "^4.15.2"
   },
   "devDependencies": {
     "got": "^11.3.0",
@@ -19,13 +20,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tlfoutz/cse341-node"
+    "url": "https://github.com/heroku/node-js-getting-started"
   },
   "keywords": [
-    "BYUI",
-    "heroku",
-    "express",
     "node",
-    "cse341"
-  ]
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
 }
