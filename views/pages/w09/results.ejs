@@ -8,11 +8,12 @@
         <div class="container">
             <% if (typeof rate !== 'undefined') { %> 
             <h2>Resulting rate: $<%- rate %></h2>
+            <a class="btn" href="/prove09">Try another</a>
             <% } %>
 
             <% if (typeof error !== 'undefined') { %> 
             <h2><%- error %></h2>
-            <a class="btn" href="/prove09">Back</a>
+            <a class="btn" href="/prove09">Try again</a>
             <% } %>
         </div>
     </body>
