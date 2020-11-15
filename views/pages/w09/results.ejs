@@ -5,9 +5,12 @@
     </head>
 
     <body>
+        <h1>Postal Rate Calculator Results</h2>
+
         <div class="container">
             <% if (typeof rate !== 'undefined') { %> 
-            <h2>Resulting rate: $<%- rate %></h2>
+            <h2>Resulting rate of <%- weight %> ounce <%- type %>
+                <% if (type == 'First-Class Package Service—Retail') { %> in Zone <%- zone %><% } %>: $<%- rate %></h2>
             <a class="btn" href="/prove09">Try another</a>
             <% } %>
 
