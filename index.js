@@ -55,9 +55,35 @@ function getCardsFromDb(queryData, callback) {
     "cards.info ->> 'text' AS text, " +
     "cards.info ->> 'image' AS image " +
     "FROM cards " +
-    "WHERE (cards.info ->> 'manaCost' != '0' OR cards.info ->> 'health' != '30') " +
-    "ORDER BY cards.info ->> 'name'";
-	const params = [];
+    "WHERE (cards.info ->> 'manaCost' != '0' OR cards.info ->> 'health' != '30') ";
+  
+  // Add filters
+  if (typeof queryData.classFilter !== 'undefined' && queryData.classFilter != 0) {
+    sql += `AND (cards.info ->> 'classId' = '${queryData.classFilter}') `;
+  }
+  if (typeof queryData.manaCostFilter !== 'undefined' && queryData.manaCostFilter != 0) {
+    sql += `AND (cards.info ->> 'manaCost' = '${queryData.manaCostFilter}') `;
+  }
+  if (typeof queryData.attackFilter !== 'undefined' && queryData.attackFilter != 0) {
+    sql += `AND (cards.info ->> 'attack' = '${queryData.attackFilter}') `;
+  }
+  if (typeof queryData.healthFilter !== 'undefined' && queryData.healthFilter != 0) {
+    sql += `AND (cards.info ->> 'health' = '${queryData.healthFilter}') `;
+  }
+  if (typeof queryData.cardTypeFilter !== 'undefined' && queryData.cardTypeFilter != 0) {
+    sql += `AND (cards.info ->> 'cardTypeId' = '${queryData.cardTypeFilter}') `;
+  }
+  if (typeof queryData.rarityFilter !== 'undefined' && queryData.rarityFilter != 0) {
+    sql += `AND (cards.info ->> 'rarityId' = '${queryData.rarityFilter}') `;
+  }
+  if (typeof queryData.minionTypeFilter !== 'undefined' && queryData.minionTypeFilter != 0) {
+    sql += `AND (cards.info ->> 'minionTypeId' = '${queryData.minionTypeFilter}') `;
+  }
+  // Select ORDER
+  if (typeof queryData.order !== 'undefined') sql += `ORDER BY cards.info ->> '${queryData.order}', cards.info ->> 'name'`;
+  else sql += "ORDER BY cards.info ->> 'name'";
+  const params = [];
+  console.log(sql)
 	pool.query(sql, params, function(err, result) {
 		// If an error occurred...
 		if (err) {

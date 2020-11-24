@@ -3,11 +3,114 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>(View)10 Prove : Assignment - Milestone 1 - End to end</title>
+		<title>10 Prove : Assignment - Milestone 1 - End to end</title>
 	</head>
 	<body>
 		<h1>Hearthstone Collectible Card Libary</h1>
 		<form action="/cardLibrary" method="GET">
+			<div>
+				<label for="order">Order by: </label>
+				<select name="order" id="order">
+					<option value="name">Name</option>
+					<option value="classId">Class</option>
+					<option value="manaCost">Mana</option>
+					<option value="attack">Attack</option>
+					<option value="health">Health</option>
+					<option value="cardTypeId">Card Type</option>
+					<option value="rarityId">Rarity</option>
+					<option value="minionTypeId">Minion Type</option>
+				</select>
+			</div><br>
+			<div>
+				<label for="classFilter">Filter Class: </label>
+				<select name="classFilter" id="classFfilter">
+					<option value="0">Show All</option>
+					<option value="2">Druid</option>
+					<option value="3">Hunter</option>
+					<option value="4">Mage</option>
+					<option value="5">Paladin</option>
+					<option value="6">Priest</option>
+					<option value="7">Rogue</option>
+					<option value="8">Shaman</option>
+					<option value="9">Warlock</option>
+					<option value="10">Warrior</option>
+					<option value="12">Neutral</option>
+					<option value="14">Demon Hunter</option>
+				</select>
+				<label for="manaCostFilter">Filter Mana Cost: </label>
+				<select name="manaCostFilter" id="manaCostFilter">
+					<option value="0">Show All</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10+</option>
+				</select>
+				<label for="attackFilter">Filter Attack: </label>
+				<select name="attackFilter" id="attackFilter">
+					<option value="0">Show All</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10+</option>
+				</select>
+				<label for="healthFilter">Filter Health: </label>
+				<select name="healthFilter" id="healthFilter">
+					<option value="0">Show All</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10+</option>
+				</select>
+				<label for="cardTypeFilter">Filter Card Type: </label>
+				<select name="cardTypeFilter" id="cardTypeFilter">
+					<option value="0">Show All</option>
+					<option value="3">Hero</option>
+					<option value="4">Minion</option>
+					<option value="5">Spell</option>
+					<option value="7">Weapon</option>
+				</select>
+				<label for="rarityFilter">Filter Rarity: </label>
+				<select name="rarityFilter" id="rarityFilter">
+					<option value="0">Show All</option>
+					<option value="1">Common</option>
+					<option value="2">Neutral</option>
+					<option value="3">Rare</option>
+					<option value="4">Epic</option>
+					<option value="5">Legendary</option>
+				</select>
+				<label for="minionTypeFilter">Filter Minion Type: </label>
+				<select name="minionTypeFilter" id="minionTypeFilter">
+					<option value="0">Show All</option>
+					<option value="14">Murloc</option>
+					<option value="15">Demon</option>
+					<option value="17">Mech</option>
+					<option value="18">Elemental</option>
+					<option value="20">Beast</option>
+					<option value="21">Totem</option>
+					<option value="23">Pirate</option>
+					<option value="24">Dragon</option>
+					<option value="26">All</option>
+				</select>
+			</div><br>
+			<input type="submit" value="Submit">
 			<table>
 				<tr>
 					<th>Name</th>
