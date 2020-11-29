@@ -18,7 +18,7 @@ app.get('/prove09', function(request, response) {
 app.get('/w09/results', calculateRate)
 // End Prove09
 
-// Start Prove10
+// Added in Prove10
 const { Pool } = require("pg");
 const { query } = require('express');
 const connectionString = process.env.DATABASE_URL;
@@ -55,28 +55,28 @@ function getCardsFromDb(queryData, callback) {
     "cards.info ->> 'text' AS text, " +
     "cards.info ->> 'image' AS image " +
     "FROM cards " +
-    "WHERE (cards.info ->> 'manaCost' != '0' OR cards.info ->> 'health' != '30') ";
+    "WHERE (cards.info ->> 'manaCost' != '0' OR cards.info ->> 'cardTypeId' != '3') ";
   
   // Add filters
-  if (typeof queryData.classFilter !== 'undefined' && queryData.classFilter != 0) {
+  if (typeof queryData.classFilter !== 'undefined' && queryData.classFilter != "all") {
     sql += `AND (cards.info ->> 'classId' = '${queryData.classFilter}') `;
   }
-  if (typeof queryData.manaCostFilter !== 'undefined' && queryData.manaCostFilter != 0) {
+  if (typeof queryData.manaCostFilter !== 'undefined' && queryData.manaCostFilter != "all") {
     sql += `AND (cards.info ->> 'manaCost' = '${queryData.manaCostFilter}') `;
   }
-  if (typeof queryData.attackFilter !== 'undefined' && queryData.attackFilter != 0) {
+  if (typeof queryData.attackFilter !== 'undefined' && queryData.attackFilter != "all") {
     sql += `AND (cards.info ->> 'attack' = '${queryData.attackFilter}') `;
   }
-  if (typeof queryData.healthFilter !== 'undefined' && queryData.healthFilter != 0) {
+  if (typeof queryData.healthFilter !== 'undefined' && queryData.healthFilter != "all") {
     sql += `AND (cards.info ->> 'health' = '${queryData.healthFilter}') `;
   }
-  if (typeof queryData.cardTypeFilter !== 'undefined' && queryData.cardTypeFilter != 0) {
+  if (typeof queryData.cardTypeFilter !== 'undefined' && queryData.cardTypeFilter != "all") {
     sql += `AND (cards.info ->> 'cardTypeId' = '${queryData.cardTypeFilter}') `;
   }
-  if (typeof queryData.rarityFilter !== 'undefined' && queryData.rarityFilter != 0) {
+  if (typeof queryData.rarityFilter !== 'undefined' && queryData.rarityFilter != "all") {
     sql += `AND (cards.info ->> 'rarityId' = '${queryData.rarityFilter}') `;
   }
-  if (typeof queryData.minionTypeFilter !== 'undefined' && queryData.minionTypeFilter != 0) {
+  if (typeof queryData.minionTypeFilter !== 'undefined' && queryData.minionTypeFilter != "all") {
     sql += `AND (cards.info ->> 'minionTypeId' = '${queryData.minionTypeFilter}') `;
   }
   // Select ORDER
@@ -95,6 +95,54 @@ function getCardsFromDb(queryData, callback) {
 	});
 }
 // End Prove10
+
+// Added with Prove11
+const bodyParser = require("body-parser");
+const router = express.Router();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use("/", router);
+
+app.get('/organize', organizeLibrary);
+router.post('/save', saveDeck);
+
+function organizeLibrary(request, response) {
+
+  getCardsFromDb(request.query, function(error, result) {
+		if (error || result == null) {
+			response.status(500).json({success: false, data: error});
+		} else {
+      response.json(result);		
+    }
+	});
+}
+
+function saveDeck(request, response) {
+  const name = request.body.name;
+  const class_id = request.body.class_id;
+  const deck_cards = request.body.deck_cards;
+
+  // console.log("Name: " + name)
+  // console.log("ClassId: " + class_id)
+  // console.log("Cards: " + deck_cards)
+
+  let sql = "INSERT INTO decks(name,class_id,deck_cards) VALUES ($1, $2, $3)";
+
+  const params = [name, class_id, deck_cards];
+  console.log(sql)
+  pool.query(sql, params, function(err, result) {
+    // If an error occurred...
+    if (err) {
+      console.log("Error in query: ")
+      console.log(err);
+      response.json({saved: 0});
+    } else {
+      response.json({saved: 1});
+    }
+  });
+}
+// End Prove11
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

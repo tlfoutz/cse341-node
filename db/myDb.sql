@@ -167,13 +167,24 @@ INSERT INTO rarity(id,type) VALUES (5, 'Legendary');
 -- WHERE (cards.info ->> 'manaCost' != '0' OR cards.info ->> 'health' != '30')
 -- ORDER BY cards.info ->> 'name';
 
-CREATE TABLE users
+-- CREATE TABLE users
+-- (
+-- 	id SERIAL PRIMARY KEY NOT NULL,
+-- 	name VARCHAR(255) NOT NULL,
+-- 	password VARCHAR(255) NOT NULL,
+--   UNIQUE(name)
+-- );
+
+-- INSERT INTO users(id,name,password) VALUES (1, 'test1', 'test[0001]');
+
+CREATE TABLE decks
 (
 	id SERIAL PRIMARY KEY NOT NULL,
 	name VARCHAR(255) NOT NULL,
-	password VARCHAR(255) NOT NULL,
-  UNIQUE(name)
+	class_id INT REFERENCES classes(id) NOT NULL,
+	deck_cards JSON NOT NULL,
+  	UNIQUE(name)
 );
 
-INSERT INTO users(id,name,password) VALUES (1, 'test1', 'test[0001]');
+INSERT INTO decks(name,class_id,deck_cards) VALUES ('test1', 2, '{"oneCard": "1", "twoCard": "2"}');
 -- End Project 02
