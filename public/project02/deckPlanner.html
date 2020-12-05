@@ -11,6 +11,14 @@
                 grid-template-columns: 2fr 1fr;
                 grid-gap: 20px;
             }
+            #libraryTable, #deckTable {
+                overflow-y:scroll;
+                height:400px;
+                display:block;
+            }
+            td {
+                text-align:center
+            }
         </style>
 		<title>11 Prove : Assignment - Milestone 2</title>
 	</head>
@@ -18,7 +26,8 @@
         <div id="library" class="grid-child">
             <h1>Hearthstone Collectible Card Libary</h1>
             <div>
-                <label for="order">Order by: </label>
+                <label for="order"><b>Order by:</b></label>
+                <br>
                 <select name="order" id="order">
                     <option value="name">Name</option>
                     <option value="classId">Class</option>
@@ -31,114 +40,124 @@
                 </select>
             </div><br>
             <div>
-                <label for="classFilter">Filter Class: </label>
-                <select name="classFilter" id="classFilter">
-                    <option value="all">Show All</option>
-                    <option value="2">Druid</option>
-                    <option value="3">Hunter</option>
-                    <option value="4">Mage</option>
-                    <option value="5">Paladin</option>
-                    <option value="6">Priest</option>
-                    <option value="7">Rogue</option>
-                    <option value="8">Shaman</option>
-                    <option value="9">Warlock</option>
-                    <option value="10">Warrior</option>
-                    <option value="12">Neutral</option>
-                    <option value="14">Demon Hunter</option>
-                </select>
-                <label for="manaCostFilter">Filter Mana Cost: </label>
-                <select name="manaCostFilter" id="manaCostFilter">
-                    <option value="all">Show All</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10+</option>
-                </select>
-                <label for="attackFilter">Filter Attack: </label>
-                <select name="attackFilter" id="attackFilter">
-                    <option value="all">Show All</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10+</option>
-                </select>
-                <label for="healthFilter">Filter Health: </label>
-                <select name="healthFilter" id="healthFilter">
-                    <option value="all">Show All</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10+</option>
-                </select>
-                <label for="cardTypeFilter">Filter Card Type: </label>
-                <select name="cardTypeFilter" id="cardTypeFilter">
-                    <option value="all">Show All</option>
-                    <option value="3">Hero</option>
-                    <option value="4">Minion</option>
-                    <option value="5">Spell</option>
-                    <option value="7">Weapon</option>
-                </select>
-                <label for="rarityFilter">Filter Rarity: </label>
-                <select name="rarityFilter" id="rarityFilter">
-                    <option value="all">Show All</option>
-                    <option value="1">Common</option>
-                    <option value="2">Neutral</option>
-                    <option value="3">Rare</option>
-                    <option value="4">Epic</option>
-                    <option value="5">Legendary</option>
-                </select>
-                <label for="minionTypeFilter">Filter Minion Type: </label>
-                <select name="minionTypeFilter" id="minionTypeFilter">
-                    <option value="all">Show All</option>
-                    <option value="14">Murloc</option>
-                    <option value="15">Demon</option>
-                    <option value="17">Mech</option>
-                    <option value="18">Elemental</option>
-                    <option value="20">Beast</option>
-                    <option value="21">Totem</option>
-                    <option value="23">Pirate</option>
-                    <option value="24">Dragon</option>
-                    <option value="26">All</option>
-                </select>
-            </div><br>
-            <button onclick="applyOrganizers()">Apply</button><br><br>
-            <p>After applying filters/order, simply click on a row to add that card to the deck.</p>
+                <label for="applyButton"><b>Filters: </b></label>
+                <button onclick="applyOrganizers()">Apply</button>
+                <br><br>
+                <table>
+                    <tr>
+                        <th><label for="classFilter">Class</label></th>
+                        <th><label for="manaCostFilter">Mana Cost</label></th>
+                        <th><label for="attackFilter">Attack</label></th>
+                        <th><label for="healthFilter">Health</label></th>
+                        <th><label for="cardTypeFilter">Card Type</label></th>
+                        <th><label for="rarityFilter">Rarity</label></th>
+                        <th><label for="minionTypeFilter">Minion Type</label></th>
+                    </tr>
+                    <tr>
+                        <td><select name="classFilter" id="classFilter">
+                            <option value="all">Show All</option>
+                            <option value="2">Druid</option>
+                            <option value="3">Hunter</option>
+                            <option value="4">Mage</option>
+                            <option value="5">Paladin</option>
+                            <option value="6">Priest</option>
+                            <option value="7">Rogue</option>
+                            <option value="8">Shaman</option>
+                            <option value="9">Warlock</option>
+                            <option value="10">Warrior</option>
+                            <option value="12">Neutral</option>
+                            <option value="14">Demon Hunter</option>
+                        </select></td>
+                        <td><select name="manaCostFilter" id="manaCostFilter">
+                            <option value="all">Show All</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10+</option>
+                            </select></td>
+                        <td><select name="attackFilter" id="attackFilter">
+                            <option value="all">Show All</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10+</option>
+                        </select></td>
+                        <td><select name="healthFilter" id="healthFilter">
+                            <option value="all">Show All</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10+</option>
+                        </select></td>
+                        <td><select name="cardTypeFilter" id="cardTypeFilter">
+                            <option value="all">Show All</option>
+                            <option value="3">Hero</option>
+                            <option value="4">Minion</option>
+                            <option value="5">Spell</option>
+                            <option value="7">Weapon</option>
+                        </select></td>
+                        <td><select name="rarityFilter" id="rarityFilter">
+                            <option value="all">Show All</option>
+                            <option value="1">Common</option>
+                            <option value="2">Neutral</option>
+                            <option value="3">Rare</option>
+                            <option value="4">Epic</option>
+                            <option value="5">Legendary</option>
+                        </select></td>
+                        <td><select name="minionTypeFilter" id="minionTypeFilter">
+                            <option value="all">Show All</option>
+                            <option value="14">Murloc</option>
+                            <option value="15">Demon</option>
+                            <option value="17">Mech</option>
+                            <option value="18">Elemental</option>
+                            <option value="20">Beast</option>
+                            <option value="21">Totem</option>
+                            <option value="23">Pirate</option>
+                            <option value="24">Dragon</option>
+                            <option value="26">All</option>
+                        </select></td>
+                    </tr>
+                </table>
+            </div>
+            <br>
             <table id="libraryTable">
+                <tr><td>To see cards, select order and filters, then click "Apply"</td></tr>
+                <tr><td>After applying filters/order, click on a row to add that card to the deck</td></tr>
             </table>
         </div>
         <div id="deck" class="grid-child">
             <h1>Hearthstone Deck Planner</h1>
-            <!-- <label for="loader">Load Deck: </label>
+            <label for="loader">Load Deck: </label>
             <input type="text" id="loader" name="loader" placeholder="Deck Name">
             <button onclick="loadDeck()">Load</button>
-            <p id="loadMsg" style="color: red;"></p> -->
+            <p id="loadMsg" style="color: red;"></p>
             <label for="saver">Save Deck: </label>
             <input type="text" id="saver" name="saver" placeholder="Deck Name">
             <button onclick="saveDeck()">Save</button>
             <p id="saveMsg" style="color: red;"></p>
-            <!-- <button onclick="clearDeck()">Clear</button><br><br> -->
+            <button onclick="clearDeck()">Clear</button><br><br>
             <label for="deckClass">Deck Class: </label>
-            <select name="deckClass" id="deckClass">
+            <select name="deckClass" id="deckClass"onchange="clearDeck()">
                 <option value="2">Druid</option>
                 <option value="3">Hunter</option>
                 <option value="4">Mage</option>
@@ -150,6 +169,7 @@
                 <option value="10">Warrior</option>
                 <option value="14">Demon Hunter</option>
             </select>
+            <p id="deckMsg" style="color: red;"></p>
             <table id="deckTable">
             </table>
         </div>

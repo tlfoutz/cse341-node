@@ -153,7 +153,11 @@ INSERT INTO rarity(id,type) VALUES (5, 'Legendary');
 -- Select ALL cards
 -- SELECT
 -- 	cards.info ->> 'id' AS cardId,
--- 	(SELECT classes.type from classes where CAST(classes.id AS varchar) = cards.info->> 'classId') AS classId,
+-- 	CASE
+-- 		WHEN cards.info::json#>>'{multiClassIds,0}' IS NULL THEN (SELECT classes.type from classes where CAST(classes.id AS varchar) = cards.info->> 'classId')
+-- 		WHEN cards.info::json#>>'{multiClassIds,2}' IS NULL THEN CONCAT ((SELECT classes.type from classes where CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,0}'), ', ', (SELECT classes.type from classes where CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,1}'))
+-- 		ELSE CONCAT ((SELECT classes.type from classes where CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,0}'), ', ', (SELECT classes.type from classes where CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,1}'),  ', ', (SELECT classes.type from classes where CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,2}'))
+-- 		END AS classId,
 -- 	cards.info ->> 'name' AS name,
 -- 	cards.info ->> 'manaCost' AS manaCost,
 -- 	cards.info ->> 'attack' AS attack,
@@ -164,8 +168,10 @@ INSERT INTO rarity(id,type) VALUES (5, 'Legendary');
 -- 	cards.info ->> 'text' AS text,
 -- 	cards.info ->> 'image' AS image
 -- FROM cards
--- WHERE (cards.info ->> 'manaCost' != '0' OR cards.info ->> 'health' != '30')
+-- WHERE (cards.info ->> 'manaCost' != '0' OR cards.info ->> 'cardTypeId' != '3')
+-- -- Where cards.info ->> 'name' = 'High Abbess Alura'
 -- ORDER BY cards.info ->> 'name';
+
 
 -- CREATE TABLE users
 -- (

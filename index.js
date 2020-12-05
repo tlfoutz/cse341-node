@@ -44,7 +44,11 @@ function getCards(request, response) {
 
 function getCardsFromDb(queryData, callback) {
   let sql = "SELECT cards.info ->> 'id' AS cardId, " +
-    "(SELECT classes.type from classes where CAST(classes.id AS varchar) = cards.info->> 'classId') AS classId, " +
+	  "CASE " +
+	  "WHEN cards.info::json#>>'{multiClassIds,0}' IS NULL THEN (SELECT classes.type FROM classes WHERE CAST(classes.id AS varchar) = cards.info->> 'classId') " +
+	  "WHEN cards.info::json#>>'{multiClassIds,2}' IS NULL THEN CONCAT ((SELECT classes.type FROM classes WHERE CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,0}'), ', ', (SELECT classes.type FROM classes WHERE CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,1}')) " +
+	  "ELSE CONCAT ((SELECT classes.type FROM classes WHERE CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,0}'), ', ', (SELECT classes.type FROM classes WHERE CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,1}'),  ', ', (SELECT classes.type FROM classes WHERE CAST(classes.id AS varchar) = cards.info::json#>>'{multiClassIds,2}')) " +
+    "END AS classId," +
     "cards.info ->> 'name' AS name, " +
     "cards.info ->> 'manaCost' AS manaCost, " +
     "cards.info ->> 'attack' AS attack, " +
@@ -59,7 +63,7 @@ function getCardsFromDb(queryData, callback) {
   
   // Add filters
   if (typeof queryData.classFilter !== 'undefined' && queryData.classFilter != "all") {
-    sql += `AND (cards.info ->> 'classId' = '${queryData.classFilter}') `;
+    sql += `AND (cards.info ->> 'classId' = '${queryData.classFilter}' OR cards.info::json#>>'{multiClassIds,0}' = '${queryData.classFilter}' OR cards.info::json#>>'{multiClassIds,1}' = '${queryData.classFilter}' OR cards.info::json#>>'{multiClassIds,3}' = '${queryData.classFilter}') `
   }
   if (typeof queryData.manaCostFilter !== 'undefined' && queryData.manaCostFilter != "all") {
     sql += `AND (cards.info ->> 'manaCost' = '${queryData.manaCostFilter}') `;
@@ -79,6 +83,7 @@ function getCardsFromDb(queryData, callback) {
   if (typeof queryData.minionTypeFilter !== 'undefined' && queryData.minionTypeFilter != "all") {
     sql += `AND (cards.info ->> 'minionTypeId' = '${queryData.minionTypeFilter}') `;
   }
+  
   // Select ORDER
   if (typeof queryData.order !== 'undefined') sql += `ORDER BY cards.info ->> '${queryData.order}', cards.info ->> 'name'`;
   else sql += "ORDER BY cards.info ->> 'name'";
@@ -105,6 +110,7 @@ app.use(bodyParser.json());
 app.use("/", router);
 
 app.get('/organize', organizeLibrary);
+app.get('/load', loadDeck);
 router.post('/save', saveDeck);
 
 function organizeLibrary(request, response) {
@@ -117,6 +123,7 @@ function organizeLibrary(request, response) {
     }
 	});
 }
+
 
 function saveDeck(request, response) {
   const name = request.body.name;
@@ -143,6 +150,29 @@ function saveDeck(request, response) {
   });
 }
 // End Prove11
+
+// Added with Prove12
+
+function loadDeck(request, response) {
+  const name = request.query.name;
+
+  // console.log("Name: " + name)
+
+  let sql = "SELECT name, class_id, deck_cards FROM decks WHERE name = $1";
+  const params = [name];
+  console.log(sql)
+  pool.query(sql, params, function(err, result) {
+    // If an error occurred...
+    if (err) {
+      console.log("Error in query: ")
+      console.log(err);
+      response.json({loaded: 0});
+    } else {
+      response.json({data: result});
+    }
+  });
+}
+// End Prove12
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
