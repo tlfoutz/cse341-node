@@ -1,35 +1,33 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const bodyParser = require("body-parser");
+const router = express.Router();
+const { Pool } = require("pg");
+const connectionString = process.env.DATABASE_URL;
+const pool = new Pool({connectionString: connectionString});
 
 app.set('port', (process.env.PORT || 5000));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use("/", router);
 
-// Start Prove 09
-const calculateRate = require('./lib/w09/CalculateRate');
-
-app.get('/prove09', function(request, response) {
-  response.render('../public/w09/form');
-});
-
-app.get('/w09/results', calculateRate)
-// End Prove09
-
-// Added in Prove10
-const { Pool } = require("pg");
-const { query } = require('express');
-const connectionString = process.env.DATABASE_URL;
-const pool = new Pool({connectionString: connectionString});
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-require('dotenv').config({path: 'variables.env'});
+// process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 app.get('/cardLibrary', getCards);
+app.get('/organize', organizeLibrary);
+app.get('/load', loadDeck);
+router.post('/save', saveDeck);
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
 
 function getCards(request, response) {
-
   getCardsFromDb(request.query, function(error, result) {
 		if (error || result == null) {
 			response.status(500).json({success: false, data: error});
@@ -37,7 +35,7 @@ function getCards(request, response) {
       const cardArray = result;
       const params = {cards: cardArray};
 
-      response.render('pages/project02/cardLibrary', params);
+      response.render('pages/cardLibrary', params);
 		}
 	});
 }
@@ -88,7 +86,6 @@ function getCardsFromDb(queryData, callback) {
   if (typeof queryData.order !== 'undefined') sql += `ORDER BY cards.info ->> '${queryData.order}', cards.info ->> 'name'`;
   else sql += "ORDER BY cards.info ->> 'name'";
   const params = [];
-  console.log(sql)
 	pool.query(sql, params, function(err, result) {
 		// If an error occurred...
 		if (err) {
@@ -99,22 +96,8 @@ function getCardsFromDb(queryData, callback) {
 		callback(null, result.rows);
 	});
 }
-// End Prove10
-
-// Added with Prove11
-const bodyParser = require("body-parser");
-const router = express.Router();
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use("/", router);
-
-app.get('/organize', organizeLibrary);
-app.get('/load', loadDeck);
-router.post('/save', saveDeck);
 
 function organizeLibrary(request, response) {
-
   getCardsFromDb(request.query, function(error, result) {
 		if (error || result == null) {
 			response.status(500).json({success: false, data: error});
@@ -124,20 +107,13 @@ function organizeLibrary(request, response) {
 	});
 }
 
-
 function saveDeck(request, response) {
   const name = request.body.name;
   const class_id = request.body.class_id;
   const deck_cards = request.body.deck_cards;
-
-  // console.log("Name: " + name)
-  // console.log("ClassId: " + class_id)
-  // console.log("Cards: " + deck_cards)
-
   let sql = "INSERT INTO decks(name,class_id,deck_cards) VALUES ($1, $2, $3)";
 
   const params = [name, class_id, deck_cards];
-  console.log(sql)
   pool.query(sql, params, function(err, result) {
     // If an error occurred...
     if (err) {
@@ -149,18 +125,12 @@ function saveDeck(request, response) {
     }
   });
 }
-// End Prove11
-
-// Added with Prove12
 
 function loadDeck(request, response) {
   const name = request.query.name;
 
-  // console.log("Name: " + name)
-
   let sql = "SELECT name, class_id, deck_cards FROM decks WHERE name = $1";
   const params = [name];
-  console.log(sql)
   pool.query(sql, params, function(err, result) {
     // If an error occurred...
     if (err) {
@@ -172,8 +142,3 @@ function loadDeck(request, response) {
     }
   });
 }
-// End Prove12
-
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});

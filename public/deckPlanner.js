@@ -58,12 +58,10 @@ function loadDeck() {
 
     $.get("/load", params, function(data) {
         console.log(data.data)
-        if(!data.data.rowCount) {
-            $("#loadMsg").text("That deck name doesn't exist. Please try another.");
-        }
+        if(!data.data.rowCount) editMsg("load", "That deck name doesn't exist. Please try another.");
         else {
-            $("#loadMsg").text("Deck loaded!");
             clearDeck();
+            editMsg("load", "Deck loaded!");
             const table = document.getElementById("deckTable");
             const deck = data.data.rows[0];
 
@@ -71,21 +69,21 @@ function loadDeck() {
             const deckClass = document.getElementById("deckClass");
             const opts = deckClass.options;
             for (let opt, i = 0; opt = opts[i]; i++) {
-            if (opt.value == classId) {
-                deckClass.selectedIndex = i;
-                break;
+                if (opt.value == classId) {
+                    deckClass.selectedIndex = i;
+                    break;
+                }
             }
-        }
 
             Object.entries(deck.deck_cards).forEach(([key, value]) => {
                 const row = document.createElement("tr");
                 const name = value.cardName;
                 row.id = value.deckCardId;
                 row.className = name;
-                row.innerHTML = "<td>" + name + "</td><td><button id=\"delete" + value.deckCardId.slice(10) + "\" onclick=\"removeCard(this)\">Remove</button>";
+                row.innerHTML = "<td>" + name + "</td><td><button id=\"delete" +
+                    value.deckCardId.slice(10) + "\" onclick=\"removeCard(this)\">Remove</button>";
                 table.appendChild(row);
             });
-
         }
     })
 }
@@ -130,16 +128,14 @@ function saveDeck() {
     const params = {name: deckName, class_id: classId, deck_cards: JSON.stringify(deckCards)};
 
     $.post("/save", params, function(data){
-        if(!data.saved) {
-            $("#saveMsg").text("That deck name is already claimed. Please try another.");
-        } else {
-            $("#saveMsg").text("Deck saved!");
-        }
+        if(!data.saved) editMsg("save", "That deck name is already claimed. Please try another.");
+        else editMsg("save", "Deck saved!");
     });
 }
 
 function clearDeck() {
     $("#deckTable").empty();
+    editMsg();
 }
 
 function addCard(e) {
@@ -160,19 +156,13 @@ function addCard(e) {
                 row.id = "deckCardId" + id;
                 row.innerHTML = "<td>" + name + "</td><td><button id=\"delete" + id + "\" onclick=\"removeCard(this)\">Remove</button>";
                 table.appendChild(row);
-                $("#deckMsg").text("Card added!");
+                editMsg("deck", "Card added!");
             }
-            else {
-                $("#deckMsg").text("Cannot add anymore of that card.");
-            }
+            else editMsg("deck", "Cannot add anymore of that card.");
         }
-        else {
-            $("#deckMsg").text("That card can't be added to a deck of this class.");
-        }
+        else editMsg("deck", "That card can't be added to a deck of this class.");
     }
-    else {
-        $("#deckMsg").text("Deck capacity of 30 cards reached.");
-    }
+    else editMsg("deck", "Deck capacity of 30 cards reached.");
 }
 
 function removeCard(e) {
@@ -181,4 +171,29 @@ function removeCard(e) {
 
     const table = document.getElementById("deckTable");
     table.removeChild(toRemove);
+}
+
+function editMsg(type, message) {
+    switch (type) {
+    case "save":
+        $("#saveMsg").text(message);
+        $("#loadMsg").empty();
+        $("#deckMsg").empty();
+        return;
+    case "load":
+        $("#loadMsg").text(message);
+        $("#saveMsg").empty();
+        $("#deckMsg").empty();
+        return;
+    case "deck":
+        $("#deckMsg").text(message);
+        $("#loadMsg").empty();
+        $("#saveMsg").empty();
+        return;
+    default:
+        $("#saveMsg").empty();
+        $("#loadMsg").empty();
+        $("#deckMsg").empty();
+        return;
+    }
 }

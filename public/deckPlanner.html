@@ -5,29 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="deckPlanner.js"></script>
-        <style>
-            .grid-container {
-                display: grid;
-                grid-template-columns: 2fr 1fr;
-                grid-gap: 20px;
-            }
-            #libraryTable, #deckTable {
-                overflow-y:scroll;
-                height:400px;
-                display:block;
-            }
-            td {
-                text-align:center
-            }
-        </style>
+        <link rel="stylesheet" href="deckPlanner.css">
 		<title>11 Prove : Assignment - Milestone 2</title>
 	</head>
-	<body class="grid-container">
+	<body>
+        <img src="/img/logo.png" alt="Hearthstone Logo" class="center">
+        <div class="grid-container">
         <div id="library" class="grid-child">
-            <h1>Hearthstone Collectible Card Libary</h1>
+            <h1>Collectible Card Libary</h1>
             <div>
                 <label for="order"><b>Order by:</b></label>
-                <br>
                 <select name="order" id="order">
                     <option value="name">Name</option>
                     <option value="classId">Class</option>
@@ -38,11 +25,10 @@
                     <option value="rarityId">Rarity</option>
                     <option value="minionTypeId">Minion Type</option>
                 </select>
-            </div><br>
-            <div>
                 <label for="applyButton"><b>Filters: </b></label>
                 <button onclick="applyOrganizers()">Apply</button>
-                <br><br>
+            </div>
+            <div>
                 <table>
                     <tr>
                         <th><label for="classFilter">Class</label></th>
@@ -146,7 +132,7 @@
             </table>
         </div>
         <div id="deck" class="grid-child">
-            <h1>Hearthstone Deck Planner</h1>
+            <h1>Deck Planner</h1>
             <label for="loader">Load Deck: </label>
             <input type="text" id="loader" name="loader" placeholder="Deck Name">
             <button onclick="loadDeck()">Load</button>
@@ -173,5 +159,6 @@
             <table id="deckTable">
             </table>
         </div>
+    </div>
 	</body>
 </html>

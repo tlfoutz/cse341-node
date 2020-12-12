@@ -1,24 +1,3 @@
--- Start TA 10
-CREATE TABLE person
-(
-	id SERIAL PRIMARY KEY NOT NULL,
-	first VARCHAR(100) NOT NULL,
-	last VARCHAR(100),
-	birthdate date
-);
-
-INSERT INTO person(first, last, birthdate) VALUES
-  ('Thomas', 'Burton', '1878-08-28'),
-  ('Herbert', 'Burton', '1847-10-01'),
-  ('Mary', 'Pass', '1849-08-06');
-
-CREATE TABLE child_parent (
-    child_id    INT REFERENCES person(id) PRIMARY KEY NOT NULL,
-    parent_id   INT REFERENCES person(id) PRIMARY KEY NOT NULL
-)
--- End TA 10
-
--- Start Project 02
 CREATE TABLE cards (
 	id serial NOT NULL PRIMARY KEY,
 	info json NOT NULL
@@ -108,6 +87,7 @@ INSERT INTO rarity(id,type) VALUES (3, 'Rare');
 INSERT INTO rarity(id,type) VALUES (4, 'Epic');
 INSERT INTO rarity(id,type) VALUES (5, 'Legendary');
 
+-- Keywords not used
 -- CREATE TABLE keywords (
 -- 	id INT PRIMARY KEY NOT NULL,
 -- 	type VARCHAR(255) NOT NULL
@@ -169,19 +149,8 @@ INSERT INTO rarity(id,type) VALUES (5, 'Legendary');
 -- 	cards.info ->> 'image' AS image
 -- FROM cards
 -- WHERE (cards.info ->> 'manaCost' != '0' OR cards.info ->> 'cardTypeId' != '3')
--- -- Where cards.info ->> 'name' = 'High Abbess Alura'
+-- -- Where cards.info ->> 'name' = 'High Abbess Alura' -- Specific card test
 -- ORDER BY cards.info ->> 'name';
-
-
--- CREATE TABLE users
--- (
--- 	id SERIAL PRIMARY KEY NOT NULL,
--- 	name VARCHAR(255) NOT NULL,
--- 	password VARCHAR(255) NOT NULL,
---   UNIQUE(name)
--- );
-
--- INSERT INTO users(id,name,password) VALUES (1, 'test1', 'test[0001]');
 
 CREATE TABLE decks
 (
@@ -191,6 +160,3 @@ CREATE TABLE decks
 	deck_cards JSON NOT NULL,
   	UNIQUE(name)
 );
-
-INSERT INTO decks(name,class_id,deck_cards) VALUES ('test1', 2, '{"oneCard": "1", "twoCard": "2"}');
--- End Project 02
