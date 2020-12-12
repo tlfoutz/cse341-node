@@ -7,6 +7,7 @@ function applyOrganizers() {
     const cardTypeFilter = $("#cardTypeFilter").val();
     const rarityFilter = $("#rarityFilter").val();
     const minionTypeFilter = $("#minionTypeFilter").val();
+    const search = $("#search").val();
 
     const params = {
         order:order,
@@ -16,7 +17,8 @@ function applyOrganizers() {
         healthFilter:healthFilter,
         cardTypeFilter:cardTypeFilter,
         rarityFilter:rarityFilter,
-        minionTypeFilter:minionTypeFilter
+        minionTypeFilter:minionTypeFilter,
+        search:search
     }
 
 	$.get("/organize", params, function(data) {
